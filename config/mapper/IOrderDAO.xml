@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.soho.postCardTailor.dao.IOrderDAO">
+    <insert id="doCreate" parameterType="Order">
+        INSERT INTO `order` (customerName,width,height, type,waterMark,operatorId)
+        VALUE (#{customerName},#{size.width},#{size.height},#{type},#{waterMark},#{operator.id})
+        <selectKey keyColumn="id" keyProperty="id" resultType="int">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+    <select id="findAll" resultMap="orderResultMap">
+        SELECT
+            id,
+            customerName,
+            width,
+            height,
+            type,
+            waterMark,
+            operatorId
+        FROM `order`
+    </select>
+    <select id="findById" resultMap="orderResultMap" parameterType="int">
+        SELECT
+            id,
+            customerName,
+            width,
+            height,
+            type,
+            waterMark,
+            operatorId
+        FROM `order`
+        WHERE id = #{orderId}
+    </select>
+    <resultMap id="orderResultMap" type="Order">
+        <result column="customerName" property="customerName"/>
+        <result column="type" property="type"/>
+        <result column="id" property="id"/>
+        <result column="waterMark" property="waterMark"/>
+        <result column="width" property="size.width"/>
+        <result column="height" property="size.height"/>
+        <association property="operator" column="operatorId" select="com.soho.postCardTailor.dao.IOperatorDAO.findById"/>
+    </resultMap>
+</mapper>

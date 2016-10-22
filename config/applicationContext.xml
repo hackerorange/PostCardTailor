@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--启动扫描-->
+    <context:component-scan base-package="com.soho.postCardTailor"/>
+    <!--加载配置文件-->
+    <bean id="configurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+    <!--定义数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="url" value="${connection.url}"/>
+        <property name="username" value="${connection.username}"/>
+        <property name="password" value="${connection.password}"/>
+        <property name="driverClassName" value="${connection.driverClassName}"/>
+        <property name="maxTotal" value="${connection.maxActive}"/>
+        <property name="initialSize" value="${connection.initialSize}"/>
+        <property name="maxIdle" value="${connection.maxIdle}"/>
+        <property name="maxWaitMillis" value="${connection.maxWait}"/>
+        <property name="minIdle" value="${connection.minIdle}"/>
+        <property name="removeAbandonedOnBorrow" value="${connection.removeAbandoned}"/>
+        <property name="logAbandoned" value="${connection.logAbandoned}"/>
+        <property name="removeAbandonedTimeout" value="${connection.removeAbandonedTimeout}"/>
+        <property name="removeAbandonedOnMaintenance" value="${connection.removeAbandoned}"/>
+    </bean>
+    <!--配置事务处理-->
+    <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--开启事务处理Annotation-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--sqlSessionFactoryBean-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:myBatis.xml"/>
+        <property name="mapperLocations" value="classpath*:mapper/*.xml"/>
+        <property name="typeAliasesPackage" value="com.soho.postCardTailor.pojo;com.soho.postCardTailor.pojo.order"/>
+    </bean>
+    <!--mapper-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.soho.postCardTailor.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+    </bean>
+</beans>

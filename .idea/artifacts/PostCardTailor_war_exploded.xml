@@ -1,0 +1,32 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="PostCardTailor:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/PostCardTailor_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="PostCardTailor/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="PostCardTailor" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="application" name="spring-tx-4.3.2.RELEASE" />
+          <element id="library" level="application" name="dbcp" />
+          <element id="library" level="application" name="myBatis与整合包" />
+          <element id="library" level="application" name="log4J" />
+          <element id="library" level="application" name="Spring依赖包" />
+          <element id="library" level="application" name="mysql-connector-java-5.1.39-bin" />
+          <element id="library" level="application" name="jstl" />
+          <element id="library" level="application" name="commons-fileupload-1.3.1" />
+          <element id="library" level="application" name="jackson" />
+          <element id="library" level="application" name="Spring4.3" />
+          <element id="library" level="application" name="JSTL" />
+          <element id="library" level="application" name="Tomcat" />
+          <element id="file-copy" path="D:/MyLibLocation/log4J/log4j-1.2.17.jar" />
+          <element id="library" level="module" name="myBatis与整合包" module-name="PostCardTailor" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-5.1.39-bin.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-fileupload-1.3.1.jar" />
+          <element id="library" level="module" name="dbcp" module-name="PostCardTailor" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

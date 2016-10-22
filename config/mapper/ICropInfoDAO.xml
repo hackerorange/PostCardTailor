@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.soho.postCardTailor.dao.ICropInfoDAO">
+
+    <insert id="doCreate" parameterType="CropInfo">
+        INSERT INTO cropinfo (postCardId)
+        VALUES (#{postCard.id});
+    </insert>
+    <update id="doUpdate" parameterType="CropInfo">
+        UPDATE cropinfo
+        <set>
+            <if test="cropBox!=null">
+                cropBox_width=#{cropBox.size.width},
+                cropBox_height=#{cropBox.size.height},
+                cropBox_left=#{cropBox.location.x},
+                cropBox_width=#{cropBox.location.y},
+            </if>
+            <if test="pictureBox!=null">
+                <if test="pictureBox.size!=null">
+                    pictureBox_width=#{pictureBox.size.width},
+                    pictureBox_height=#{pictureBox.size.height},
+                </if>
+                <if test="pictureBox.location!=null">
+                    pictureBox_left=#{pictureBox.location.x},
+                    pictureBox_top=#{pictureBox.location.y},
+                </if>
+            </if>
+            <if test="cropBox!=null">
+                <if test="cropBox.size!=null">
+                    cropBox_width=#{cropBox.size.width},
+                    cropBox_height=#{cropBox.size.height},
+                </if>
+                <if test="cropBox.location!=null">
+                    cropBox_left=#{cropBox.location.x},
+                    cropBox_top=#{cropBox.location.y},
+                </if>
+            </if>
+        </set>
+        WHERE postCardId=#{postCard.id}
+    </update>
+    <select id="findByPostCardId" parameterType="int" resultMap="cropInfoResultMap">
+        SELECT
+            postCardId,
+            cropBox_left,
+            cropBox_top,
+            cropBox_width,
+            cropBox_height,
+            pictureBox_left,
+            pictureBox_top,
+            pictureBox_width,
+            pictureBox_height
+        FROM cropinfo
+        WHERE postCardId = #{id}
+    </select>
+    <resultMap id="cropInfoResultMap" type="CropInfo">
+        <result column="cropBox_left" property="cropBox.location.x"/>
+        <result column="cropBox_top" property="cropBox.location.y"/>
+        <result column="cropBox_width" property="cropBox.size.width"/>
+        <result column="cropBox_height" property="cropBox.size.height"/>
+        <result column="pictureBox_left" property="pictureBox.location.x"/>
+        <result column="pictureBox_top" property="pictureBox.location.y"/>
+        <result column="pictureBox_width" property="pictureBox.size.width"/>
+        <result column="pictureBox_height" property="pictureBox.size.height"/>
+        <association property="postCard" column="postCardId"
+                     select="com.soho.postCardTailor.dao.IPostCardDAO.findById"/>
+    </resultMap>
+</mapper>

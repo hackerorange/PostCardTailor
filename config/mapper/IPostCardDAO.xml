@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.soho.postCardTailor.dao.IPostCardDAO">
+    <insert id="doCreate" parameterType="PostCard">
+        INSERT INTO postcard (orderId, fileName, filePath,stateId) VALUES (#{order.id}, #{fileName},
+        #{filePath},#{stateId})
+        <selectKey keyColumn="id" keyProperty="id" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <update id="doUpdate" parameterType="PostCard">
+        UPDATE postcard
+        <set>
+            <if test="fileName!=null and fileName!=''">fileName=#{fileName},</if>
+            <if test="filePath!=null and filePath!=''">filePath=#{filePath},</if>
+            <if test="order!=null and order.id!=null">orderId=#{order.id},</if>
+            <if test="stateId!=null">stateId=#{stateId},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <select id="findAll" resultMap="postCardResultMap">
+        SELECT
+            id,
+            orderId,
+            fileName,
+            filePath,
+            createTime,
+            stateId
+        FROM postcard
+        ORDER BY createTime DESC
+    </select>
+    <select id="findAllByOrderId" parameterType="int" resultMap="postCardResultMap">
+        SELECT
+            id,
+            orderId,
+            fileName,
+            filePath,
+            createTime,
+            stateId
+        FROM postcard
+        WHERE orderId = #{orderId}
+        ORDER BY createTime DESC
+
+    </select>
+    <select id="findById" resultMap="postCardResultMap">
+        SELECT
+            id,
+            orderId,
+            fileName,
+            filePath,
+            createTime,
+            stateId
+        FROM postcard
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAllByStateId" resultMap="postCardResultMap">
+        SELECT
+            id,
+            orderId,
+            fileName,
+            filePath,
+            createTime,
+            stateId
+        FROM postcard
+        WHERE stateId = #{id}
+    </select>
+    <resultMap id="postCardResultMap" type="PostCard">
+        <result column="id" property="id"/>
+        <result column="fileName" property="fileName"/>
+        <result column="filePath" property="filePath"/>
+        <result column="createTime" property="createTime"/>
+        <result column="stateId" property="stateId"/>
+        <association property="order" column="orderId" select="com.soho.postCardTailor.dao.IOrderDAO.findById"/>
+    </resultMap>
+    <select id="getAllCountByState" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM postcard
+        WHERE stateId = #{id}
+    </select>
+</mapper>
