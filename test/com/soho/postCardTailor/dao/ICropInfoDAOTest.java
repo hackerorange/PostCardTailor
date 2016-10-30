@@ -25,7 +25,7 @@ public class ICropInfoDAOTest {
     @Test
     public void doCreate() throws Exception {
         CropInfo cropInfo = new CropInfo();
-        cropInfo.setPostCard(new PostCard(54, null, null, null, null, null));
+        cropInfo.setPostCard(new PostCard(54, null, null, null, null, null, null));
         cropInfoDAO.doCreate(cropInfo);
     }
 
@@ -44,7 +44,7 @@ public class ICropInfoDAOTest {
 
     @Test
     public void findByPostCardId() throws Exception {
-        CropInfo cropInfo=cropInfoDAO.findByPostCardId(54);
+        CropInfo cropInfo = cropInfoDAO.findByPostCardId(54);
         System.out.println(cropInfo);
     }
 

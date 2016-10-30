@@ -1,8 +1,8 @@
 package com.soho.postCardTailor.business;
 
-import com.soho.postCardTailor.exception.ThereIsPostCardNeedTailorException;
 import com.soho.postCardTailor.pojo.postCard.CropInfo;
 import com.soho.postCardTailor.pojo.postCard.PostCard;
+import org.apache.commons.fileupload.FileItem;
 
 import java.util.List;
 
@@ -10,14 +10,6 @@ import java.util.List;
  * 明信片相关类
  */
 public interface IPostCardBusiness {
-    /**
-     * 插入新的明信片
-     *
-     * @param postCard 要插入的明信片
-     * @return 是否插入成功
-     */
-    boolean insert(PostCard postCard);
-
     /**
      * 获取所有明信片
      *
@@ -48,4 +40,13 @@ public interface IPostCardBusiness {
     CropInfo getCropInfo() ;
 
     boolean modifyCropInfo(CropInfo cropInfo);
+
+    /**
+     * 将明信片保存到数据库中
+     * @param basePath 明信片需要保存的基准路径
+     * @param orderId 这张明信片所属的订单编号
+     * @param fileItem 明信片照片信息
+     * @return 是否保存成功，成功返回True，失败返回False
+     */
+    boolean insert(String basePath,Integer orderId, FileItem fileItem);
 }

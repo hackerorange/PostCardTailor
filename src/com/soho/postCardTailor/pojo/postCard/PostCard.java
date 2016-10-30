@@ -11,6 +11,7 @@ public class PostCard {
     private Integer id;
     private Order order;
     private String filePath;
+    private String thumbPath;
     private String fileName;
     private Date createTime;
     private Integer stateId;
@@ -19,13 +20,22 @@ public class PostCard {
 
     }
 
-    public PostCard(Integer id, Order order, String filePath, String fileName, Date createTime, Integer stateId) {
+    public PostCard(Integer id, Order order, String filePath, String thumbPath, String fileName, Date createTime, Integer stateId) {
         this.id = id;
         this.order = order;
         this.filePath = filePath;
+        this.thumbPath = thumbPath;
         this.fileName = fileName;
         this.createTime = createTime;
         this.stateId = stateId;
+    }
+
+    public String getThumbPath() {
+        return thumbPath;
+    }
+
+    public void setThumbPath(String thumbPath) {
+        this.thumbPath = thumbPath;
     }
 
     public Integer getStateId() {
@@ -82,8 +92,10 @@ public class PostCard {
                 "id=" + id +
                 ", order=" + order +
                 ", filePath='" + filePath + '\'' +
+                ", thumbPath='" + thumbPath + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", createTime=" + createTime +
+                ", stateId=" + stateId +
                 '}';
     }
 }

@@ -8,9 +8,9 @@ import com.soho.postCardTailor.pojo.Operator;
 import com.soho.postCardTailor.pojo.order.Order;
 import com.soho.postCardTailor.pojo.order.OrderDTO;
 import com.soho.postCardTailor.pojo.order.OrderHelper;
-import com.soho.postCardTailor.pojo.postCard.PostCard;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +36,7 @@ public class OrderController {
     ISizeBusiness sizeBusiness;
     @Resource
     IOrderBusiness orderBusiness;
-//    @Resource
+    //    @Resource
 //    IPostCardDAO postCardDAO;
     @Resource
     IPostCardBusiness postCardBusiness;
@@ -69,11 +68,11 @@ public class OrderController {
         return "redirect:detail/" + order.getId() + "/upload";
     }
 
-        @RequestMapping(value = "detail/{orderId}/upload")
-        public String upload(@PathVariable("orderId") Integer orderId, Model model) {
-            Order order = orderBusiness.findById(orderId);
-            System.out.println(order);
-            model.addAttribute("order", OrderHelper.fromOrder(order));
+    @RequestMapping(value = "detail/{orderId}/upload")
+    public String upload(@PathVariable("orderId") Integer orderId, Model model) {
+        Order order = orderBusiness.findById(orderId);
+        System.out.println(order);
+        model.addAttribute("order", OrderHelper.fromOrder(order));
         model.addAttribute("uploadPath", "../order/detail/" + orderId + "/upload");
         System.out.println(OrderHelper.fromOrder(order));
         return "postCard_upload";
@@ -84,24 +83,11 @@ public class OrderController {
         System.out.println("执行此过程");
         FileItemFactory itemFactory = new DiskFileItemFactory();
         ServletFileUpload servletFileUpload = new ServletFileUpload(itemFactory);
-        List<FileItem> fileItems = null;
         try {
-            fileItems = servletFileUpload.parseRequest(request);
-            for (FileItem fileItem : fileItems) {
-                if (!fileItem.isFormField()) {
-                    File path = new File(request.getServletContext().getRealPath("postCard/" +orderId));
-                    synchronized (this) {//当文件夹不存在的时候，创建新的文件夹
-                        if (!path.exists()) {
-                            path.mkdirs();
-                        }
-                    }
-                    File file = new File(path, UUID.randomUUID().toString() + ".jpg");//文件路径+文件名称
-                    fileItem.write(file);//写入文件
-                    PostCard postCard = new PostCard(-1, new Order(orderId, null, null, null, null, null), file.getAbsolutePath(), fileItem.getName(), null,0);//获取明信片最终信息
-                    postCardBusiness.insert(postCard);
-                }
-            }
-        } catch (Exception e) {
+            List<FileItem> fileItems = servletFileUpload.parseRequest(request);
+            //遍历fileItems，如果是文件，执行保存操作
+            fileItems.stream().filter(fileItem -> !fileItem.isFormField()).forEach(fileItem -> postCardBusiness.insert(request.getServletContext().getRealPath("postCard"), orderId, fileItem));
+        } catch (FileUploadException e) {
             e.printStackTrace();
         }
         response.setHeader("Access-Control-Allow-Origin", "*");

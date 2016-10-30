@@ -270,7 +270,7 @@ function PostCard(obj) {
             $pictureBack.css({//设置图片，等待图片加载完成
                 width: "auto",
                 height: "auto"
-            }).attr("src", "../postCardTailor/picture/" + currentData.postCard.id);
+            }).attr("src", "../postCardTailor/thumb/" + currentData.postCard.id);
         }
     }
 

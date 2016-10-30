@@ -43,4 +43,5 @@
         <property name="basePackage" value="com.soho.postCardTailor.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
     </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

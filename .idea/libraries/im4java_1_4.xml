@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="im4java-1.4">
+    <CLASSES>
+      <root url="file://D:/Java_Lib/im4java-1.4.0" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://D:/Java_Lib/im4java-1.4.0" recursive="false" />
+  </library>
+</component>

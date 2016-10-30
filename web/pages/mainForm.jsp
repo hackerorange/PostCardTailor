@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 </head>
 <body class="easyui-layout">
-<div data-options="region:'north',border:false" style="background-color:lightgreen; height: 55px">
+<div data-options="region:'north',border:false" style="background-color:lightgreen; height: 60px">
     <div style="padding:5px;">
         <jsp:include page="header.jsp"/>
     </div>

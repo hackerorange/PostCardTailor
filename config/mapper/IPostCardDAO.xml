@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.soho.postCardTailor.dao.IPostCardDAO">
     <insert id="doCreate" parameterType="PostCard">
-        INSERT INTO postcard (orderId, fileName, filePath,stateId) VALUES (#{order.id}, #{fileName},
-        #{filePath},#{stateId})
+        INSERT
+        INTO postcard (orderId, fileName,thumbPath, filePath,stateId)
+        VALUES ( #{order.id}, #{fileName},#{thumbPath}, #{filePath},#{stateId})
         <selectKey keyColumn="id" keyProperty="id" resultType="int">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -23,6 +24,7 @@
             id,
             orderId,
             fileName,
+            thumbPath,
             filePath,
             createTime,
             stateId
@@ -34,6 +36,7 @@
             id,
             orderId,
             fileName,
+            thumbPath,
             filePath,
             createTime,
             stateId
@@ -47,6 +50,7 @@
             id,
             orderId,
             fileName,
+            thumbPath,
             filePath,
             createTime,
             stateId
@@ -59,20 +63,24 @@
             id,
             orderId,
             fileName,
+            thumbPath,
             filePath,
             createTime,
             stateId
         FROM postcard
         WHERE stateId = #{id}
     </select>
+    <!--mapper-->
     <resultMap id="postCardResultMap" type="PostCard">
         <result column="id" property="id"/>
         <result column="fileName" property="fileName"/>
+        <result column="thumbPath" property="thumbPath"/>
         <result column="filePath" property="filePath"/>
         <result column="createTime" property="createTime"/>
         <result column="stateId" property="stateId"/>
         <association property="order" column="orderId" select="com.soho.postCardTailor.dao.IOrderDAO.findById"/>
     </resultMap>
+    <!--获取根据状态，查找总数-->
     <select id="getAllCountByState" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM postcard

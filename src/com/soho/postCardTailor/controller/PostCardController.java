@@ -50,7 +50,7 @@ public class PostCardController {
 //        生成新的裁切信息
         cropInfo = postCardBusiness.getCropInfo();
         if (cropInfo == null) {
-            cropInfo=new CropInfo();
+            cropInfo = new CropInfo();
         } else {
             cropInfo.getPostCard().getOrder().getOperator().setPassword("");//清除密码信息;
             System.out.println(cropInfo.getCropBox().getSize());
@@ -72,6 +72,30 @@ public class PostCardController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentType(MediaType.IMAGE_PNG);
         File file = new File(postCard.getFilePath());
+        return new ResponseEntity<>(FileUtil.readAsByteArray(file), headers, HttpStatus.OK);
+    }
+
+    /**
+     * 获取明信片缩略图
+     *
+     * @param id 缩略图ID
+     * @return 缩略图文件
+     * @throws IOException 文件读取异常
+     */
+    @RequestMapping("thumb/{id}")
+    public ResponseEntity<byte[]> getThumb(@PathVariable("id") Integer id) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        System.out.println(id);
+        PostCard postCard = postCardBusiness.getById(id);
+        postCard.getFilePath();
+        try {
+            headers.setContentDispositionFormData("attachment", new String(postCard.getFilePath().getBytes("GBK"), "ISO-8859-1"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentType(MediaType.IMAGE_PNG);
+        File file = new File(postCard.getThumbPath());
         return new ResponseEntity<>(FileUtil.readAsByteArray(file), headers, HttpStatus.OK);
     }
 }
