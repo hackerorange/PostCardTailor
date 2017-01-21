@@ -1,2 +1,13 @@
 # PostCardTailor
 明信片裁切器
+
+=说明
+
+==开始使用
+---
+[source,java]
+package org.com;
+import java.lang;
+
+
+---
